@@ -84,3 +84,51 @@ if not df_filtered.empty:
     st.dataframe(df_filtered.head(1))  # Show only the first row
 else:
     st.write("No se encontraron resultados para los filtros seleccionados.")
+
+
+
+# prompt: usando de dataframe df, crear 2 filtros con streamlit en un sidebar, uno con la columna Region y otro con la columna State e imprimir el dataframe. Tambien crea una grafica de pastel con la columna Category
+
+import pandas as pd
+import streamlit as st
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataframe
+try:
+    df = pd.read_excel('SalidaFinal.xlsx')
+except FileNotFoundError:
+    st.error("Error: Archivo 'SalidaFinal.xlsx' no encontrado. Verifica la ruta.")
+    st.stop()
+except Exception as e:
+    st.error(f"Ocurrió un error al leer el archivo: {e}")
+    st.stop()
+
+# Sidebar with filters
+st.sidebar.header("Filtros")
+
+# Region filter
+selected_regions = st.sidebar.multiselect("Selecciona regiones", df['Region'].unique())
+
+# State filter
+selected_states = st.sidebar.multiselect("Selecciona estados", df['State'].unique())
+
+# Apply filters
+if selected_regions:
+    df = df[df['Region'].isin(selected_regions)]
+if selected_states:
+    df = df[df['State'].isin(selected_states)]
+
+
+# Display the filtered dataframe
+st.dataframe(df)
+
+# Pie chart for Category
+if 'Category' in df.columns:
+    st.write("Gráfico de pastel de la columna Category") # Added heading
+    fig, ax = plt.subplots()
+    df['Category'].value_counts().plot.pie(autopct='%1.1f%%', ax=ax)
+    st.pyplot(fig)
+else:
+    st.write("La columna 'Category' no está presente en el DataFrame.")
+
