@@ -48,3 +48,7 @@ try:
 
 except Exception as e:
     st.error(f"Ocurrió un error al generar el gráfico: {e}")
+
+with st.sidebar:
+    #Crea un filtro en la columna 'Region'
+    region_seleccionada = st.selectbox('Selecciona una Region') , df ['Region'] . unique ())
