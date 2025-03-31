@@ -102,3 +102,29 @@ try:
 
 except Exception as e:
     st.error(f"Ocurrió un error al generar el gráfico: {e}")
+    # Sidebar with filters
+st.sidebar.header("Filtros")
+
+# Region filter
+selected_regions = st.sidebar.multiselect("Selecciona regiones", df['Region'].unique())
+
+# State filter
+selected_states = st.sidebar.multiselect("Selecciona estados", df['State'].unique())
+
+# Apply filters
+if selected_regions and selected_states:
+    df_filtered = df[(df['Region'].isin(selected_regions)) & (df['State'].isin(selected_states))]
+elif selected_regions:
+    df_filtered = df[df['Region'].isin(selected_regions)]
+elif selected_states:
+    df_filtered = df[df['State'].isin(selected_states)]
+else:
+    df_filtered = df
+
+# Display the filtered result (first row if available)
+if not df_filtered.empty:
+    st.write("Resultado del filtro:")
+    st.dataframe(df_filtered.head(1))  # Show only the first row
+else:
+    st.write("No se encontraron resultados para los filtros seleccionados.")
+
