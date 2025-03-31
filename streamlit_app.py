@@ -208,18 +208,4 @@ fig_pie = px.pie(category_counts,
                      title='Distribución de Categorías')
 st.plotly_chart(fig_pie)
 
-import streamlit as st
 
-# Título de la aplicación
-st.title('Aplicación con Sidebar')
-
-# Crear una barra lateral
-st.sidebar.title('Sidebar')
-
-# Agregar elementos a la barra lateral
-st.sidebar.write('Este es un ejemplo de una barra lateral en Streamlit.')
-st.sidebar.slider('Selecciona un valor', 0, 100, 50)
-st.sidebar.selectbox('Selecciona una opción', ['Opción 1', 'Opción 2', 'Opción 3'])
-
-# Contenido principal
-st.write('Contenido principal de la aplicación.')
