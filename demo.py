@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-
+import plotly.express as px
 # Lee el archivo Excel 
 try:
   df = pd.read_excel('SalidaFinal.xlsx')
