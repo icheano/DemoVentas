@@ -133,3 +133,42 @@ else:
     st.write("La columna 'Category' no está presente en el DataFrame.")
 
 fig = px.scatter(df, x="total_bill", y="tip", trendline="ols")
+
+
+
+
+# prompt: usando de dataframe df, crear 2 filtros con streamlit, uno con la columna Region y otro con la columna State el filtro de la columna state debe cambiar cuando el filtro de la columna region cambia, e imprimir el dataframe. Tambien crea una grafica de pastel con la columna Category
+
+# Sidebar with filters
+st.sidebar.header("Filtros")
+
+# Region filter
+selected_regions = st.sidebar.multiselect("Selecciona regiones", df['Region'].unique())
+
+# State filter (dependent on Region)
+if selected_regions:
+    available_states = df[df['Region'].isin(selected_regions)]['State'].unique()
+    selected_states = st.sidebar.multiselect("Selecciona estados", available_states)
+else:
+    selected_states = st.sidebar.multiselect("Selecciona estados", df['State'].unique())
+
+# Apply filters
+if selected_regions:
+    df = df[df['Region'].isin(selected_regions)]
+if selected_states:
+    df = df[df['State'].isin(selected_states)]
+
+# Display the filtered dataframe
+st.dataframe(df)
+
+# Pie chart for Category (improved error handling)
+if 'Category' in df.columns:
+    st.write("Gráfico de pastel de la columna Category")
+    if not df['Category'].empty:  # Check if the 'Category' column is not empty after filtering
+      fig, ax = plt.subplots()
+      df['Category'].value_counts().plot.pie(autopct='%1.1f%%', ax=ax)
+      st.pyplot(fig)
+    else:
+      st.write("La columna 'Category' está vacía después de aplicar los filtros.")
+else:
+    st.write("La columna 'Category' no está presente en el DataFrame.")
