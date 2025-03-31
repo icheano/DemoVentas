@@ -38,4 +38,4 @@ ax.pie(categoria_counts, labels=categoria_counts.index, autopct='%1.1f%%')
 ax.axis('equal')  # Para asegurar que el pastel es un círculo.
 
 st.pyplot(fig)
-streamlit run streamlit_app.py
+
