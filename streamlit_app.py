@@ -91,3 +91,54 @@ f.update_xaxes(title="Price")
 f.update_yaxes(title="No. of listings")
 st.plotly_chart(f)
 
+
+
+
+
+
+
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Ejemplo de DataFrame
+data = {
+    'Region': ['Norte', 'Sur', 'Este', 'Oeste', 'Norte', 'Sur', 'Este', 'Oeste'],
+    'State': ['A', 'B', 'C', 'D', 'A', 'B', 'C', 'D'],
+    'Category': ['Cat1', 'Cat2', 'Cat3', 'Cat1', 'Cat2', 'Cat3', 'Cat1', 'Cat2'],
+    'Valor': [10, 20, 30, 40, 50, 60, 70, 80]
+}
+df = pd.DataFrame(data)
+
+# Título de la aplicación
+st.title('Filtros de Regiones y Estados')
+
+# Crear filtros de selección múltiple basados en las columnas 'Region' y 'State' y colocarlos en la barra lateral
+region_seleccionada = st.sidebar.multiselect(
+    'Selecciona una o más regiones',
+    options=df['Region'].unique(),
+    default=df['Region'].unique()
+)
+
+state_seleccionado = st.sidebar.multiselect(
+    'Selecciona uno o más estados',
+    options=df['State'].unique(),
+    default=df['State'].unique()
+)
+
+# Filtrar el DataFrame basado en la selección del usuario
+df_filtrado = df[(df['Region'].isin(region_seleccionada)) & (df['State'].isin(state_seleccionado))]
+
+# Mostrar el DataFrame filtrado
+st.write('DataFrame Filtrado:')
+st.dataframe(df_filtrado)
+
+# Crear una gráfica de pastel basada en la columna 'Category'
+st.write('Gráfica de Pastel por Categoría:')
+categoria_counts = df['Category'].value_counts()
+
+fig, ax = plt.subplots()
+ax.pie(categoria_counts, labels=categoria_counts.index, autopct='%1.1f%%')
+ax.axis('equal')  # Para asegurar que el pastel es un círculo.
+
+st.pyplot(fig)
