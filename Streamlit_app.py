@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Título de la aplicación
-st.title('Filtros de Regiones y Estados')
+st.title('Filtros de Region y State')
 
 # Cargar el archivo Excel
 url = 'https://github.com/icheano/DemoVentas/raw/main/SalidaFinal.xlsx'
@@ -12,18 +12,18 @@ df = pd.read_excel(url, sheet_name='Sheet1')
 # Crear filtros de selección múltiple basados en las columnas 'Region' y 'State' y colocarlos en la barra lateral
 region_seleccionada = st.sidebar.multiselect(
     'Selecciona una o más regiones',
-    options=df['region'].unique(),
-    default=df['region'].unique()
+    options=df['Region'].unique(),
+    default=df['Region'].unique()
 )
 
 estado_seleccionado = st.sidebar.multiselect(
     'Selecciona uno o más estados',
-    options=df['estado'].unique(),
-    default=df['estado'].unique()
+    options=df['State'].unique(),
+    default=df['State'].unique()
 )
 
 # Filtrar el DataFrame basado en la selección del usuario
-df_filtrado = df[(df['region'].isin(region_seleccionada)) & (df['estado'].isin(estado_seleccionado))]
+df_filtrado = df[(df['Region'].isin(region_seleccionada)) & (df['State'].isin(estado_seleccionado))]
 
 # Mostrar el DataFrame filtrado
 st.write('DataFrame Filtrado:')
@@ -56,21 +56,21 @@ st.title('Ventas Acumuladas por Año, Categoría y Subcategoría (Barras) o Vent
 # Crear filtros de selección múltiple basados en las columnas 'region' y 'estado' y colocarlos en la barra lateral
 region_seleccionada = st.sidebar.multiselect(
     'Selecciona una o más regiones',
-    options=df['region'].unique(),
-    default=df['region'].unique()
+    options=df['Region'].unique(),
+    default=df['Region'].unique()
 )
 
 # Filtrar el DataFrame basado en la selección del usuario para 'Region'
-df_filtrado_region = df[df['region'].isin(region_seleccionada)]
+df_filtrado_region = df[df['Region'].isin(Region_seleccionada)]
 
 state_seleccionado = st.sidebar.multiselect(
     'Selecciona uno o más estados',
-    options=df_filtrado_region['estado'].unique(),
-    default=df_filtrado_region['estado'].unique()
+    options=df_filtrado_region['State'].unique(),
+    default=df_filtrado_region['State'].unique()
 )
 
 # Filtrar el DataFrame basado en la selección del usuario para 'Region' y 'State'
-df_filtrado = df[(df['region'].isin(region_seleccionada)) & (df['estado'].isin(state_seleccionado))]
+df_filtrado = df[(df['Region'].isin(Region_seleccionada)) & (df['State'].isin(State_seleccionado))]
 
 # Mostrar el DataFrame filtrado
 st.write('DataFrame Filtrado:')
