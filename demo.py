@@ -41,3 +41,17 @@ except FileNotFoundError:
 
 except Exception as e:
     st.error(f"Ocurrió un error: {e}")
+
+# Crear un filtro de selección múltiple basado en la columna 'region'
+region_seleccionada = st.multiselect(
+    'Selecciona una o más regiones',
+    options=df['region'].unique(),
+    default=df['region'].unique()
+)
+
+# Filtrar el DataFrame basado en la selección del usuario
+df_filtrado = df[df['region'].isin(region_seleccionada)]
+
+# Mostrar el DataFrame filtrado
+st.write('DataFrame Filtrado:')
+st.dataframe(df_filtrado)
