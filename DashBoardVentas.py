@@ -244,3 +244,57 @@ plt.xlabel('Región')
 plt.ylabel('Ventas Acumuladas')
 st.pyplot(fig)
 
+
+
+
+# prompt: crea una grafica de pastel de las categorias de los productos y agregale filtros
+
+# ... (your existing code) ...
+
+# Sidebar with filters
+st.sidebar.header("Filtros")
+
+# Region filter
+selected_regions = st.sidebar.multiselect("Selecciona regiones", df['Region'].unique())
+
+# State filter (dependent on Region)
+if selected_regions:
+    available_states = df[df['Region'].isin(selected_regions)]['State'].unique()
+    selected_states = st.sidebar.multiselect("Selecciona estados", available_states)
+else:
+    selected_states = st.sidebar.multiselect("Selecciona estados", df['State'].unique())
+
+# Category filter (added)
+selected_categories = st.sidebar.multiselect("Selecciona categorías", df['Category'].unique())
+
+
+# Apply filters
+if selected_regions:
+    df = df[df['Region'].isin(selected_regions)]
+if selected_states:
+    df = df[df['State'].isin(selected_states)]
+if selected_categories:  # Apply category filter
+    df = df[df['Category'].isin(selected_categories)]
+
+
+# Display the filtered dataframe
+st.dataframe(df)
+
+# Pie chart for Category (improved error handling and filtering)
+if 'Category' in df.columns:
+    st.write("Gráfico de pastel de la columna Category")
+    if not df.empty and not df['Category'].empty:  # Check if the DataFrame and 'Category' column are not empty
+        category_counts = df['Category'].value_counts()
+        if not category_counts.empty: # Check if there are any categories after filtering
+          fig, ax = plt.subplots()
+          category_counts.plot.pie(autopct='%1.1f%%', ax=ax)
+          st.pyplot(fig)
+        else:
+          st.write("No hay categorías disponibles después de aplicar los filtros.")
+    else:
+        st.write("El DataFrame o la columna 'Category' está vacía después de aplicar los filtros.")
+else:
+    st.write("La columna 'Category' no está presente en el DataFrame.")
+
+
+
