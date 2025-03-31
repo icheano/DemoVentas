@@ -10,8 +10,6 @@ except FileNotFoundError:
 except Exception as e:
   st.error(f"Ocurrió un error: {e}")
 
-matplotlib
-
 # prompt: arma un gráfica de las Sales por Region del dataframe df y mostrar en streamlit
 
 import matplotlib.pyplot as plt
