@@ -132,3 +132,4 @@ if 'Category' in df.columns:
 else:
     st.write("La columna 'Category' no está presente en el DataFrame.")
 
+fig = px.scatter(df, x="total_bill", y="tip", trendline="ols")
