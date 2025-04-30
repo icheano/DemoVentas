@@ -104,5 +104,47 @@ region_sales = df.groupby("Region")["Sales"].sum().reset_index()
 bar_fig = px.bar(region_sales, x="Region", y="Sales", title="Ventas Acumuladas por Región", labels={"Sales": "Ventas", "Region": "Región"})
 st.plotly_chart(bar_fig)
 
+usando streamlit, crear una gráfica de linea del acumulado de Sales por año usando la columna Order Date en el dataframe df
 
+import streamlit as st
+import pandas as pd
+import plotly.express as px
 
+# Lee el archivo Excel
+try:
+    df = pd.read_excel('SalidaFinal.xlsx')
+    st.dataframe(df)  # Muestra el DataFrame en Streamlit
+
+    # Verifica si las columnas necesarias existen en el DataFrame
+    if 'Order Date' in df.columns and 'Sales' in df.columns:
+        # Convertir la columna 'Order Date' a formato datetime
+        df['Order Date'] = pd.to_datetime(df['Order Date'], errors='coerce')
+
+        # Filtrar filas con fechas válidas
+        df = df.dropna(subset=['Order Date'])
+
+        # Crear una nueva columna para el año
+        df['Year'] = df['Order Date'].dt.year
+
+        # Agrupar por año y calcular el acumulado de ventas
+        sales_by_year = df.groupby('Year')['Sales'].sum().reset_index()
+
+        # Crear la gráfica de línea
+        line_fig = px.line(
+            sales_by_year,
+            x='Year',
+            y='Sales',
+            title='Acumulado de Ventas por Año',
+            labels={'Year': 'Año', 'Sales': 'Ventas Acumuladas'}
+        )
+
+        # Mostrar la gráfica en Streamlit
+        st.plotly_chart(line_fig)
+    else:
+        st.error("Error: Las columnas 'Order Date' o 'Sales' no se encuentran en el DataFrame.")
+
+except FileNotFoundError:
+    st.error("Error: Archivo 'SalidaFinal.xlsx' no encontrado. Verifica la ruta.")
+
+except Exception as e:
+    st.error(f"Ocurrió un error: {e}")
