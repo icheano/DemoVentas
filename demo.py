@@ -237,3 +237,25 @@ except FileNotFoundError:
 
 except Exception as e:
     st.error(f"Ocurrió un error: {e}")
+
+
+# Gráfica de barras: Ventas Acumuladas por Región y Sub-Categoría
+if 'Region' in df.columns and 'Sales' in df.columns and 'Sub-Category' in df.columns:
+    # Agrupar por Región y Sub-Category, y calcular el acumulado de ventas
+    region_subcategory_sales = df.groupby(['Region', 'Sub-Category'])['Sales'].sum().reset_index()
+
+    # Crear la gráfica de barras
+    bar_fig = px.bar(
+        region_subcategory_sales,
+        x='Region',
+        y='Sales',
+        color='Sub-Category',  # Desglosar por Sub-Category
+        barmode='group',  # Agrupar las barras por Región
+        title='Ventas Acumuladas por Región y Sub-Categoría',
+        labels={'Region': 'Región', 'Sales': 'Ventas', 'Sub-Category': 'Sub-Categoría'}
+    )
+
+    # Mostrar la gráfica en Streamlit
+    st.plotly_chart(bar_fig)
+else:
+    st.error("Error: Las columnas 'Region', 'Sales' o 'Sub-Category' no se encuentran en el DataFrame.")
