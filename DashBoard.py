@@ -82,3 +82,7 @@ except FileNotFoundError:
     st.error("Error: El archivo 'SalidaFinal.xlsx' no se encuentra.")
 except Exception as e:
     st.error(f"Error al leer el archivo o generar la gráfica: {e}")
+
+# Imprimir los nombres de las columnas del DataFrame
+st.write("Nombres de las columnas del DataFrame:")
+st.write(df.columns.tolist())
