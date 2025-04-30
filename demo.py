@@ -259,3 +259,34 @@ if 'Region' in df.columns and 'Sales' in df.columns and 'Sub-Category' in df.col
     st.plotly_chart(bar_fig)
 else:
     st.error("Error: Las columnas 'Region', 'Sales' o 'Sub-Category' no se encuentran en el DataFrame.")
+
+# Gráfica de barras: Ventas Acumuladas por Año, Categoría y Sub-Categoría
+if 'Order Date' in df.columns and 'Sales' in df.columns and 'Category' in df.columns and 'Sub-Category' in df.columns:
+    # Convertir la columna 'Order Date' a formato datetime
+    df['Order Date'] = pd.to_datetime(df['Order Date'], errors='coerce')
+
+    # Filtrar filas con fechas válidas
+    df = df.dropna(subset=['Order Date'])
+
+    # Crear una nueva columna para el año
+    df['Year'] = df['Order Date'].dt.year
+
+    # Agrupar por año, categoría y subcategoría, y calcular el acumulado de ventas
+    sales_by_year_category_subcategory = df.groupby(['Year', 'Category', 'Sub-Category'])['Sales'].sum().reset_index()
+
+    # Crear la gráfica de barras
+    bar_fig = px.bar(
+        sales_by_year_category_subcategory,
+        x='Year',
+        y='Sales',
+        color='Sub-Category',  # Desglosar por Sub-Categoría
+        facet_col='Category',  # Crear facetas por Categoría
+        barmode='group',  # Agrupar las barras por año
+        title='Ventas Acumuladas por Año, Categoría y Sub-Categoría',
+        labels={'Year': 'Año', 'Sales': 'Ventas Acumuladas', 'Sub-Category': 'Sub-Categoría', 'Category': 'Categoría'}
+    )
+
+    # Mostrar la gráfica en Streamlit
+    st.plotly_chart(bar_fig)
+else:
+    st.error("Error: Las columnas 'Order Date', 'Sales', 'Category' o 'Sub-Category' no se encuentran en el DataFrame.")
