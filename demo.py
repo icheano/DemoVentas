@@ -104,7 +104,7 @@ region_sales = df.groupby("Region")["Sales"].sum().reset_index()
 bar_fig = px.bar(region_sales, x="Region", y="Sales", title="Ventas Acumuladas por Región", labels={"Sales": "Ventas", "Region": "Región"})
 st.plotly_chart(bar_fig)
 
-usando streamlit, crear una gráfica de linea del acumulado de Sales por año usando la columna Order Date en el dataframe df
+
 
 import streamlit as st
 import pandas as pd
